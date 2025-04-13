@@ -2,117 +2,140 @@
 
 Submitted by: Samuel Peprah Millner
 
-The Course Scheduler Application is a Java-based desktop program built using Swing for the GUI and Apache Derby as the embedded SQL database. It allows students and administrators at a university to schedule, manage, and drop courses each semester. The GUI leverages JComboBox components to dynamically display and manage student, course, and semester data.
+The Course Scheduler Application is a Java-based academic project designed to simulate a college course registration system. It enables students to enroll in courses, manage schedules, and interact with waitlists while providing administrative functions such as managing courses and removing students. The application uses Apache Derby for persistent storage and follows clean object-oriented design principles.
 
-Time spent: ~12–15 hours (design, implementation, debugging, and GUI wiring)
+Time spent: ~12–15 hours (design, implementation, testing, debugging)
 
 ⸻
 
 ✅ Required Features
 
-The following functionality was implemented and tested for both Admin and Student roles:
-	•	Add & Drop Courses: Students can schedule or drop courses; admins can drop entire courses and view enrolled students.
-
-
-
- 
-	•	Waitlist Management: Automatically adds students to the waitlist if a class is full and promotes them when space becomes available.
-
-
- 
-	•	Display Features: Admins can view student lists per class and semester, and students can view their own schedule.
+The following core features were implemented and tested:
+	•	Admin Functions:
 
 
 
 
  
-	•	Dynamic ComboBoxes: Drop-down menus are auto-populated with real-time data from the database (e.g., course codes, semesters, student names).
+	•	View class lists of scheduled and waitlisted students
+
+
+ 
+	•	Drop a student from the system (and update waitlists accordingly)
+
+
+ 
+	•	Drop a course from a semester, removing all scheduled/waitlisted students
+
+
+ 
+	•	Student Functions:
+
+
+ 
+	•	Drop a course (from either schedule or waitlist)
+
+
+ 
+	•	Automatically promote next student on the waitlist upon seat availability
+
+
+ 
+	•	Database Integration:
+
+ 
+	•	All operations rely on SQL queries to interact with tables for students, schedules, courses, and semesters
+
+ 
+	•	Uses PreparedStatements to safely pass variables into queries without string concatenation
 
 ⸻
 
 🔧 Technical Overview
-
-The application utilizes:
-	•	Java Swing GUI components (JComboBox, JLabel, JButton, etc.) to provide a user-friendly interface.
+	•	Programming Language: Java
+ 
+	•	Database: Apache Derby (embedded)
 
 
 
  
-	•	Apache Derby for persistent storage of student, course, schedule, and semester information.
+	•	Design Approach: Object-Oriented Programming
+
+Major Components:
+	•	SemesterQueries.java – Retrieves semester list
 
 
  
-	•	SQL queries and PreparedStatements for all data operations—ensuring secure and efficient communication with the database.
+	•	StudentQueries.java – Manages student data
 
 
  
-	•	OOP Design with separation of concerns:
+	•	CourseQueries.java – Handles course metadata
 
 
  
-	•	StudentQueries, CourseQueries, ClassQueries, ScheduleQueries, etc. handle DB interaction.
-
-
-
-
- 
-	•	MainFrame.java handles GUI logic and user interaction.
-
-GUI Design Guidelines Implemented:
-	•	Students/Admins select known data (e.g., names, semesters) via ComboBoxes.
-
+	•	ClassQueries.java – Retrieves class listings
 
 
  
-	•	All display results and operation confirmations appear directly on the same GUI pane without needing extra display steps.
+	•	ScheduleQueries.java – Adds/drops students and manages scheduling/waitlists
+
+Key Concepts:
+	•	Separation of logic by query classes
+
+
+ 
+	•	Efficient updates to the Schedule table during drop operations
+
+
+ 
+	•	Ensured UI-like feedback by printing or returning operation results directly after command execution
 
 ⸻
 
 💡 Key Concepts Practiced
-	•	Java Swing GUI development
+	•	Object-Oriented Programming (OOP)
+
+ 
+	•	SQL query construction and management
 
 
  
-	•	SQL database integration using JDBC
-
-
- 
-	•	Object-Oriented Design (separating queries, models, and UI logic)
-
-
+	•	Database normalization and relationship management
 
  
-	•	Dynamic UI updates with real-time database feedback
+	•	PreparedStatement usage for secure updates
 
  
-	•	PreparedStatements to prevent SQL injection
+	•	Testing complex drop and waitlist logic based on real-time DB state
 
 ⸻
 
 🧠 Challenges Faced
-	•	Structuring the application cleanly across multiple user types (Admin vs. Student)
-
- 
-	•	Managing ComboBox state and syncing changes with live database updates
+	•	Ensuring that dropping a student triggers a cascade of correct schedule/waitlist updates across semesters
 
 
  
-	•	Ensuring database changes cascade correctly when classes or students are dropped
+	•	Keeping course schedule states consistent after class removals
+
+ 
+	•	Using appropriate SQL joins and conditions to handle queries dynamically across different tables
 
 
  
-	•	Avoiding UI flickering and redundant DB calls during display updates
+	•	Designing methods that simulate front-end logic in a console-based environment without GUI support
 
 ⸻
 
 🧪 Testing
-	•	Ran through a variety of trace-based test scenarios (manual and scripted) including:
+
+The application was tested using a provided test script and a structured database. Each function was validated to ensure:
+	•	Proper scheduling and waitlisting of students
+
 
  
-	•	Dropping full courses and confirming waitlist promotion
+	•	Waitlist promotion upon drops
 
  
-	•	Dropping students and validating that schedules and waitlists update accordingly
+	•	Correct display and removal of records
 
- 
-	•	Displaying students by class and verifying waitlist order
